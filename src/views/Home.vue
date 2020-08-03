@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-card v-if="isLoggedIn" class="pa-4 mx-auto mt-5" width="500">
-      <h1 class="mb-5">
+      <!-- <h1 class="mb-5">
         Mortgage Calculator
         <v-icon color="warning" dark @click="runTour">mdi-help-circle</v-icon>
       </h1>
-      <v-tour name="testTour" :steps="steps"></v-tour>
+      <v-tour name="testTour" :steps="steps"></v-tour>-->
       <v-form>
-        <v-text-field
+        <!-- <v-text-field
           type="text"
           prefix="$"
           v-model="homeValue"
@@ -15,32 +15,29 @@
           required
           outlined
           id="v-step-0"
-          >{{ homeValue }}</v-text-field
-        >
+        >{{ homeValue }}</v-text-field>
         <v-row align="center">
-          <v-col
-            ><v-text-field
+          <v-col>
+            <v-text-field
               prefix="$"
               v-model="downPayment"
               label="Down Payment"
               required
               outlined
               class="v-step-1"
-              >{{ downPayment }}</v-text-field
-            ></v-col
-          >
+            >{{ downPayment }}</v-text-field>
+          </v-col>
           <p>or</p>
-          <v-col
-            ><v-text-field
+          <v-col>
+            <v-text-field
               type="text"
               v-model="percentDown"
               label="Percent Down"
               suffix="%"
               required
               outlined
-              >{{ percentDown }}</v-text-field
-            ></v-col
-          >
+            >{{ percentDown }}</v-text-field>
+          </v-col>
         </v-row>
         <v-select
           v-model="mortgageType"
@@ -59,23 +56,37 @@
           required
           outlined
           data-v-step="2"
-        ></v-text-field>
-        <v-btn dark color="primary" @click="CalcMortgagePayment" data-v-step="3"
-          >Calculate Mortgage</v-btn
-        >
+        ></v-text-field>-->
+        <div class="drag-drop" v-cloak @drop.prevent="addDropFile" @dragover.prevent>
+          <v-file-input
+            v-model="files"
+            placeholder="Drag/Upload your documents"
+            label="File input Example"
+            multiple
+            show-size
+            counter
+          >
+            <template v-slot:selection="{ text }">
+              <v-chip small label close @click:close="remove(file)" color="white">
+                <span class="test primary--text">{{ text }}</span>
+              </v-chip>
+            </template>
+          </v-file-input>
+        </div>
+        <!-- <v-btn dark color="primary" @click="CalcMortgagePayment" data-v-step="3">Calculate Mortgage</v-btn> -->
       </v-form>
-      <p class="mt-5">
-        Your monthly mortgage payment will be {{ CalcMortgagePayment }}
-      </p>
-      <router-link to="/secret">Secret Page </router-link>|
-      <router-link to="/calc">Calc Page </router-link>|
-      <router-link to="/weather">Weather Page</router-link>
+      <p class="mt-5">Your monthly mortgage payment will be {{ CalcMortgagePayment }}</p>
+      <router-link to="/secret">Secret Page</router-link>|
+      <router-link to="/calc">Calc Page</router-link>|
+      <router-link to="/weather">Weather Page</router-link>|
+      <router-link to="/example-tour">Tour Page</router-link>
     </v-card>
     <v-card v-else width="500" class="mx-auto pa-4 mt-5">
       <h1>Home</h1>
       <p>
-        Please <router-link to="/login">Login</router-link> or
-        <router-link to="register">Register</router-link> to view the home page
+        Please
+        <router-link to="/login">Login</router-link>or
+        <router-link to="register">Register</router-link>to view the home page
       </p>
     </v-card>
   </div>
@@ -94,52 +105,60 @@ export default {
       percentDown: 20,
       mortgageType: { name: "15 Year Fixed", term: 15 },
       interestRate: 4.25,
+      files: [],
       items: [
         { name: "15 Year Fixed", term: 15 },
-        { name: "30 Year Fixed", term: 30 },
+        { name: "30 Year Fixed", term: 30 }
       ],
       steps: [
         {
           target: "#v-step-0", // We're using document.querySelector() under the hood
           header: {
-            title: "First Tour Step",
+            title: "First Tour Step"
           },
           content: `This is my first tour step here`,
           params: {
-            placement: "bottom",
-          },
+            placement: "bottom"
+          }
         },
         {
           target: ".v-step-1",
           content: "This is my second tour step here",
           params: {
-            placement: "left",
-          },
+            placement: "left"
+          }
         },
         {
           target: '[data-v-step="2"]',
           content: "This is my third tour step here",
           params: {
-            placement: "top",
-          },
+            placement: "top"
+          }
         },
         {
           target: '[data-v-step="3"]',
           content: "This is my fourth tour step here",
           params: {
-            placement: "top",
-          },
-        },
-      ],
+            placement: "top"
+          }
+        }
+      ]
     };
   },
   methods: {
     runTour() {
       this.$tours["testTour"].start();
     },
+    addDropFile(e) {
+      this.files = Array.from(e.dataTransfer.files);
+    },
+    remove(file) {
+      this.files.splice(this.files.indexOf(file), 1);
+      this.files = [...this.files];
+    }
   },
   created() {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.isLoggedIn = true;
       } else {
@@ -157,7 +176,17 @@ export default {
           this.mortgageType.term /
           12
       );
-    },
-  },
+    }
+  }
 };
 </script>
+<style lang="scss" scoped>
+.drag-drop {
+  border: 2px solid rgb(23, 202, 23);
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+.test {
+  text-decoration: underline;
+}
+</style>

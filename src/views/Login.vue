@@ -4,12 +4,7 @@
     <v-card class="pa-4 mx-auto mt-5" width="500">
       <h1>Login</h1>
       <v-form @submit.prevent="login">
-        <v-text-field
-          type="email"
-          v-model="email"
-          label="E-mail"
-          required
-        ></v-text-field>
+        <v-text-field type="email" v-model="email" label="E-mail" required></v-text-field>
         <v-text-field
           v-model="password"
           label="Password"
@@ -18,7 +13,7 @@
           :type="seePassword ? 'text' : 'password'"
           required
         ></v-text-field>
-        <v-btn type="submit" color="info">Login</v-btn>
+        <v-btn type="submit" class="mb-2" color="info">Login</v-btn>
         <p class="register mt-5">
           Need to create an account?
           <router-link to="/register">Register here</router-link>
@@ -39,7 +34,7 @@ export default {
       email: "",
       password: "",
       error: "",
-      seePassword: "",
+      seePassword: ""
     };
   },
   methods: {
@@ -53,8 +48,8 @@ export default {
       } catch (error) {
         alert(error);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

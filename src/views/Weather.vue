@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="pa-4 mx-auto mt-5" width="500">
+    <v-c ard class="pa-4 mx-auto mt-5" width="500">
       <h1 class="mb-5">
         Weather Page
         <v-icon color="warning" dark @click="runTour">mdi-help-circle</v-icon>
@@ -23,27 +23,16 @@
         <p class="date">{{ dateBuilder() }}</p>
         <p class="weather-type">Weather: {{ weather.weather[0].main }}</p>
         <div class="temp-box mx-auto">
-          <p class="temp" data-v-step="2">
-            {{ Math.round(weather.main.temp) }}°
-          </p>
+          <p class="temp" data-v-step="2">{{ Math.round(weather.main.temp) }}°</p>
         </div>
       </v-card>
-    </v-card>
+    </v-c>
     <div v-if="isClicked">
       <v-btn fixed dark fab bottom right color="primary" @click="unclick">
-        <v-icon left>mdi-plus</v-icon> Save
+        <v-icon left>mdi-plus</v-icon>Save
       </v-btn>
-      <v-btn
-        fixed
-        dark
-        fab
-        bottom
-        right
-        color="secondary"
-        @click="unclick"
-        class="btn-margin"
-      >
-        <v-icon left>mdi-cancel</v-icon> Discard
+      <v-btn fixed dark fab bottom right color="secondary" @click="unclick" class="btn-margin">
+        <v-icon left>mdi-cancel</v-icon>Discard
       </v-btn>
     </div>
   </div>
@@ -63,28 +52,28 @@ export default {
         {
           target: "#v-step-0", // We're using document.querySelector() under the hood
           header: {
-            title: "Let's Take The Tour!",
+            title: "Let's Take The Tour!"
           },
           content: `Please enter a city to see today's weather`,
           params: {
-            placement: "bottom",
-          },
+            placement: "bottom"
+          }
         },
         {
           target: ".v-step-1",
           content: "The typed in city name and date will appear here",
           params: {
-            placement: "top",
-          },
+            placement: "top"
+          }
         },
         {
           target: '[data-v-step="2"]',
           content: "The city's temperature displays here in degrees Farenheit",
           params: {
-            placement: "bottom",
-          },
-        },
-      ],
+            placement: "bottom"
+          }
+        }
+      ]
     };
   },
   methods: {
@@ -98,7 +87,7 @@ export default {
       fetch(
         `${this.url_base}weather?q=${this.query}&units=imperial&APPID=${this.api_key}`
       )
-        .then((res) => {
+        .then(res => {
           return res.json();
         })
         .then(this.setResults);
@@ -123,7 +112,7 @@ export default {
         "Sep",
         "Oct",
         "Nov",
-        "Dec",
+        "Dec"
       ];
       let days = [
         "Sunday",
@@ -132,15 +121,15 @@ export default {
         "Wednesday",
         "Thursday",
         "Friday",
-        "Saturday",
+        "Saturday"
       ];
       let day = days[d.getDay()];
       let date = d.getDate();
       let month = months[d.getMonth()];
       let year = d.getFullYear();
       return `${day}, ${month} ${date}  ${year}`;
-    },
-  },
+    }
+  }
 };
 </script>
 
